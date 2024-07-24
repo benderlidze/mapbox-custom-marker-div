@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Add a default marker to a web map</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.5.1/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.5.1/mapbox-gl.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .text-container {
+            background-color: rgba(0, 0, 0, 0.8);
+            width: fit-content;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            margin: 20px;
+        }
+
+        .marker-container {
+            width: fit-content;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1Ijoic2VyaHV6IiwiYSI6ImNseXpvc3RlczJpbnIya3FscDU2aHc5d3EifQ.FHtPjde_lqensSHZxqthgw';
+        const map = new mapboxgl.Map({
+            container: 'map',
+            // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
+            style: 'mapbox://styles/serhuz/clyzp5q1b00e801qngobphk0r',
+            center: { lng: -30.31584518491627, lat: -7.9887482354906325 },
+            zoom: 2,
+            projection: 'mercator'
+        });
+
+
+        // Define your marker data
+        const markerData = [
+            { align: "top-left", name: 'J-PAL GLOBAL', coordinates: [-71, 42] },
+            { align: "top-right", name: 'CLIMAVORE X JAMEEL AT RCA<br>CLIMAVORE X JAMEEL AT RCA<br>CLIMAVORE X JAMEEL AT RCA', coordinates: [-0.1, 51.5] },
+            { align: "bottom-right", name: 'CLIMAVORE X JAMEEL AT RCA<br>CLIMAVORE X JAMEEL AT RCA<br>CLIMAVORE X JAMEEL AT RCA', coordinates: [10, 10] },
+            { align: "top-left", name: 'CLIMAVORE X JAMEEL AT RCA<br>CLIMAVORE X JAMEEL AT RCA<br>CLIMAVORE X JAMEEL AT RCA', coordinates: [0, 0] },
+            { align: "bottom-right", name: 'CLIMAVORE X JAMEEL AT RCA', coordinates: [-118, 37] },
+
+        ];
+
+        function createCustomMarker({ text, align }) {
+            const markerEl = document.createElement('div');
+            markerEl.className = 'marker-container';
+            markerEl.innerHTML = `<div class="text-container">${text}</div>`;
+
+            // Create SVG for line and circle
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.setAttribute('width', '40');
+            svg.setAttribute('height', '50');
+            svg.style.overflow = 'visible';
+            svg.style.position = 'absolute';
+
+            const vline = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            vline.setAttribute('stroke', '#ff77ea');
+            vline.setAttribute('stroke-width', '3');
+
+            const hline = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            hline.setAttribute('stroke', '#ff77ea');
+            hline.setAttribute('stroke-width', '3');
+
+
+            switch (align) {
+                case 'top-left':
+                    vline.setAttribute('x1', '0');
+                    vline.setAttribute('y1', '40');
+                    vline.setAttribute('x2', '0');
+                    vline.setAttribute('y2', '0');
+
+                    hline.setAttribute('x1', '0');
+                    hline.setAttribute('y1', '40');
+                    hline.setAttribute('x2', '20');
+                    hline.setAttribute('y2', '40');
+                    svg.style.top = '0px';
+                    break;
+
+                case 'bottom-left':
+                    svg.style.left = '0px';
+                    vline.setAttribute('x1', '0');
+                    vline.setAttribute('y1', '-40');
+                    vline.setAttribute('x2', '0');
+                    vline.setAttribute('y2', '0');
+
+                    hline.setAttribute('x1', '0');
+                    hline.setAttribute('y1', '-40');
+                    hline.setAttribute('x2', '20');
+                    hline.setAttribute('y2', '-40');
+                    break;
+
+                case 'bottom-right':
+                    svg.style.right = '-40px';
+                    vline.setAttribute('x1', '0');
+                    vline.setAttribute('y1', '-40');
+                    vline.setAttribute('x2', '0');
+                    vline.setAttribute('y2', '0');
+
+                    hline.setAttribute('x1', '0');
+                    hline.setAttribute('y1', '-40');
+                    hline.setAttribute('x2', '-20');
+                    hline.setAttribute('y2', '-40');
+                    break;
+
+                case 'top-right':
+                    svg.style.top = '0px';
+                    svg.style.right = '-40px';
+                    vline.setAttribute('x1', '0');
+                    vline.setAttribute('y1', '40');
+                    vline.setAttribute('x2', '0');
+                    vline.setAttribute('y2', '0');
+
+                    hline.setAttribute('x1', '0');
+                    hline.setAttribute('y1', '40');
+                    hline.setAttribute('x2', '-20');
+                    hline.setAttribute('y2', '40');
+                    break;
+            }
+
+            const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            circle.setAttribute('cx', 0);
+            circle.setAttribute('cy', 0);
+            circle.setAttribute('r', '8');
+            circle.setAttribute('fill', '#ff77ea');
+
+            svg.appendChild(vline);
+            svg.appendChild(hline);
+            svg.appendChild(circle);
+
+            markerEl.appendChild(svg);
+
+
+
+            console.log('markerEl.get', markerEl.getBoundingClientRect());
+            return markerEl;
+        }
+
+        // Add markers to the map
+        markerData.forEach((marker) => {
+
+            const el = createCustomMarker({ text: marker.name, align: marker.align });
+            new mapboxgl.Marker(el, {
+                anchor: marker.align
+            })
+                .setLngLat(marker.coordinates)
+                .addTo(map);
+
+            // new mapboxgl.Marker()
+            //     .setLngLat(marker.coordinates)
+            //     .addTo(map);
+
+        });
+
+
+    </script>
+
+</body>
+
+</html>
