@@ -7,6 +7,14 @@
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
     <link href="https://api.mapbox.com/mapbox-gl-js/v3.5.1/mapbox-gl.css" rel="stylesheet">
     <script src="https://api.mapbox.com/mapbox-gl-js/v3.5.1/mapbox-gl.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap"
+        rel="stylesheet">
+
+
     <style>
         body {
             margin: 0;
@@ -21,14 +29,20 @@
         }
 
         .text-container {
+            font-family: "IBM Plex Mono", monospace;
             background-color: rgba(0, 0, 0, 0.8);
             width: fit-content;
             padding: 10px;
             display: flex;
+            flex-direction: column;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
             color: white;
             margin: 20px;
+        }
+
+        .text-container div {
+            width: 100%;
         }
 
         .marker-container {
@@ -51,14 +65,54 @@
             projection: 'mercator'
         });
 
-
         // Define your marker data
         const markerData = [
-            { align: "top-left", name: 'J-PAL GLOBAL', coordinates: [-71, 42] },
-            { align: "top-right", name: 'CLIMAVORE X JAMEEL AT RCA<br>CLIMAVORE X JAMEEL AT RCA<br>CLIMAVORE X JAMEEL AT RCA', coordinates: [-0.1, 51.5] },
-            { align: "bottom-right", name: 'CLIMAVORE X JAMEEL AT RCA<br>CLIMAVORE X JAMEEL AT RCA<br>CLIMAVORE X JAMEEL AT RCA', coordinates: [10, 10] },
-            { align: "top-left", name: 'CLIMAVORE X JAMEEL AT RCA<br>CLIMAVORE X JAMEEL AT RCA<br>CLIMAVORE X JAMEEL AT RCA', coordinates: [0, 0] },
-            { align: "bottom-right", name: 'CLIMAVORE X JAMEEL AT RCA', coordinates: [-118, 37] },
+            {
+                align: "bottom-right",
+                name: `MIT, Cambridge, Massachusetts:
+                        <div>- J-PAL Global</div>
+                        <div>- MIT J-WAFS</div>
+                        <div>- MIT J-WEL</div>
+                        <div>- MIT Jameel Clinic</div>
+                        <div>- Jameel Observatory CREWSnet</div>
+
+            `, coordinates: [-71.09240951238363, 42.35896932867615]
+            },
+            { align: "top-right", name: 'New York City, New York:<br>Jameel Arts & Health Lab', coordinates: [-74.00000563856793, 40.724678411585764] },
+            {
+                align: "bottom-right", name: `London, United Kingdom:
+                <div>Jameel Institute</div>
+                <div> CLIMAVORE x Jameel at RCA</div>
+                `, coordinates: [-0.06799825376552351, 51.50881496054432]
+            },
+            { align: "top-left", name: 'Paris, France:<br> - J-PAL Europe', coordinates: [2.33887024861499, 48.871736664429854] },
+            {
+                align: "top-right", name: `Cairo, Egypt:
+                    <div>- J-PAL MENA</div>
+                    <div>- Egypt Impact Lab</div>
+                    <div>- Jameel House</div>
+                `, coordinates: [31.251933921018196, 30.066274663503993]
+            },
+            {
+                align: "top-left", name: `Amman, Jordan:
+                    <div>- Jameel C40</div>
+                `, coordinates: [35.948483653410904, 31.87326059074893]
+            },
+            {
+                align: "top-right", name: `Nairobi, Kenya:
+                    <div>- Jameel Observatory for Food Security Early Action</div>
+                `, coordinates: [36.858294042232124, -1.3429733852535548]
+            },
+            {
+                align: "top-left", name: `New Delhi, India:
+                    <div>J-PAL South Asia</div>
+                `, coordinates: [77.19326317414409, 28.546483963642814]
+            },
+            {
+                align: "top-left", name: `Jakarta, Indonesia:
+                    <div>J-PAL Southeast Asia</div>
+                `, coordinates: [106.82780564173726, -6.154590023554769]
+            },
 
         ];
 
@@ -75,11 +129,11 @@
             svg.style.position = 'absolute';
 
             const vline = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-            vline.setAttribute('stroke', '#ff77ea');
+            vline.setAttribute('stroke', '#c876fc');
             vline.setAttribute('stroke-width', '3');
 
             const hline = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-            hline.setAttribute('stroke', '#ff77ea');
+            hline.setAttribute('stroke', '#c876fc');
             hline.setAttribute('stroke-width', '3');
 
 
@@ -142,17 +196,12 @@
             circle.setAttribute('cx', 0);
             circle.setAttribute('cy', 0);
             circle.setAttribute('r', '8');
-            circle.setAttribute('fill', '#ff77ea');
+            circle.setAttribute('fill', '#c876fc');
 
             svg.appendChild(vline);
             svg.appendChild(hline);
             svg.appendChild(circle);
-
             markerEl.appendChild(svg);
-
-
-
-            console.log('markerEl.get', markerEl.getBoundingClientRect());
             return markerEl;
         }
 
@@ -165,11 +214,6 @@
             })
                 .setLngLat(marker.coordinates)
                 .addTo(map);
-
-            // new mapboxgl.Marker()
-            //     .setLngLat(marker.coordinates)
-            //     .addTo(map);
-
         });
 
 
