@@ -7,13 +7,11 @@
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
     <link href="https://api.mapbox.com/mapbox-gl-js/v3.5.1/mapbox-gl.css" rel="stylesheet">
     <script src="https://api.mapbox.com/mapbox-gl-js/v3.5.1/mapbox-gl.js"></script>
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap"
         rel="stylesheet">
-
 
     <style>
         body {
@@ -45,6 +43,20 @@
             width: 100%;
         }
 
+        .text-container a {
+            display: block;
+            color: white;
+            text-decoration: none;
+        }
+
+        .text-container a:hover {
+            text-decoration: underline;
+        }
+
+        .text-container>.city {
+            color: red;
+        }
+
         .marker-container {
             width: fit-content;
         }
@@ -55,66 +67,505 @@
     <div id="map"></div>
 
     <script>
-        mapboxgl.accessToken = 'pk.eyJ1Ijoic2VyaHV6IiwiYSI6ImNseXpvc3RlczJpbnIya3FscDU2aHc5d3EifQ.FHtPjde_lqensSHZxqthgw';
+
+        const lines = {
+            "type": "FeatureCollection",
+            "features": [
+
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [[180, 83.3], [-180, 83.3]]
+                    },
+                    "properties": {}
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [[180, 81], [-180, 81]]
+                    },
+                    "properties": {}
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [[180, 78], [-180, 78]]
+                    },
+                    "properties": {}
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [[180, 74], [-180, 74]]
+                    },
+                    "properties": {}
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [[180, 69], [-180, 69]]
+                    },
+                    "properties": {}
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [[180, 62], [-180, 62]]
+                    },
+                    "properties": {}
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [[180, 53], [-180, 53]]
+                    },
+                    "properties": {}
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [[180, 43], [-180, 43]]
+                    },
+                    "properties": {}
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [[180, 30], [-180, 30]]
+                    },
+                    "properties": {}
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [[180, 15], [-180, 15]]
+                    },
+                    "properties": {}
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [[180, 0], [-180, 0]]
+                    },
+                    "properties": {}
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [[180, -15], [-180, -15]]
+                    },
+                    "properties": {}
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [[180, -30], [-180, -30]]
+                    },
+                    "properties": {}
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [[180, -43], [-180, -43]]
+                    },
+                    "properties": {}
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [[180, -53], [-180, -53]]
+                    },
+                    "properties": {}
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [[180, -62], [-180, -62]]
+                    },
+                    "properties": {}
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [[180, -69], [-180, -69]]
+                    },
+                    "properties": {}
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [[180, -74], [-180, -74]]
+                    },
+                    "properties": {}
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [[180, -90], [180, 90]]
+                    },
+                    "properties": {}
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [[165, -90], [165, 90]]
+                    },
+                    "properties": {}
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [[150, -90], [150, 90]]
+                    },
+                    "properties": {}
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [[135, -90], [135, 90]]
+                    },
+                    "properties": {}
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [[120, -90], [120, 90]]
+                    },
+                    "properties": {}
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [[105, -90], [105, 90]]
+                    },
+                    "properties": {}
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [[90, -90], [90, 90]]
+                    },
+                    "properties": {}
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [[75, -90], [75, 90]]
+                    },
+                    "properties": {}
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [[60, -90], [60, 90]]
+                    },
+                    "properties": {}
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [[45, -90], [45, 90]]
+                    },
+                    "properties": {}
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [[30, -90], [30, 90]]
+                    },
+                    "properties": {}
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [[15, -90], [15, 90]]
+                    },
+                    "properties": {}
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [[0, -90], [0, 90]]
+                    },
+                    "properties": {}
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [[-15, -90], [-15, 90]]
+                    },
+                    "properties": {}
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [[-30, -90], [-30, 90]]
+                    },
+                    "properties": {}
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [[-45, -90], [-45, 90]]
+                    },
+                    "properties": {}
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [[-60, -90], [-60, 90]]
+                    },
+                    "properties": {}
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [[-75, -90], [-75, 90]]
+                    },
+                    "properties": {}
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [[-90, -90], [-90, 90]]
+                    },
+                    "properties": {}
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [[-105, -90], [-105, 90]]
+                    },
+                    "properties": {}
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [[-120, -90], [-120, 90]]
+                    },
+                    "properties": {}
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [[-135, -90], [-135, 90]]
+                    },
+                    "properties": {}
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [[-150, -90], [-150, 90]]
+                    },
+                    "properties": {}
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [[-165, -90], [-165, 90]]
+                    },
+                    "properties": {}
+                }
+            ]
+        }
+
+
+        // mapboxgl.accessToken = 'pk.eyJ1Ijoic2VyaHV6IiwiYSI6ImNseXpvc3RlczJpbnIya3FscDU2aHc5d3EifQ.FHtPjde_lqensSHZxqthgw';
+        mapboxgl.accessToken = 'pk.eyJ1IjoiY29tbXVuaXR5amFtZWVsIiwiYSI6ImNsejVlNnVudTQ0bjcyaXFsb3lkM290ZnYifQ.TZqULeKUIpCisFDY36exQA';
+
         const map = new mapboxgl.Map({
             container: 'map',
-            // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
-            style: 'mapbox://styles/serhuz/clyzp5q1b00e801qngobphk0r',
+            style: {
+                "version": 8,
+                "name": "Test-copy",
+                "center": [-50.74917821009399, 19.81533067897695],
+                "zoom": 2.1851050312609352,
+                "bearing": 0,
+                "pitch": 0,
+                "lights": [],
+                "terrain": null,
+                "fog": { "color": "hsl(223, 0%, 0%)" },
+                "imports": [],
+                "sources": {
+                    "composite": {
+                        "url": "mapbox://mapbox.country-boundaries-v1",
+                        "type": "vector"
+                    }
+                },
+                "glyphs": "mapbox://fonts/mapbox/{fontstack}/{range}.pbf",
+                "projection": { "name": "globe" },
+                "layers": [
+                    {
+                        "id": "background",
+                        "type": "background",
+                        "layout": {},
+                        "paint": { "background-color": "#0a8ae6" }
+                    },
+                    {
+                        "id": "country-boundaries copy",
+                        "type": "fill",
+                        "source": "composite",
+                        "source-layer": "country_boundaries",
+                        "layout": {},
+                        "paint": { "fill-translate": [4, 2] }
+                    },
+                    {
+                        "id": "country-boundaries",
+                        "type": "fill",
+                        "source": "composite",
+                        "source-layer": "country_boundaries",
+                        "layout": {},
+                        "paint": { "fill-color": "#1b36bf" }
+                    }
+                ],
+            },
             center: { lng: -30.31584518491627, lat: -7.9887482354906325 },
             zoom: 2,
-            projection: 'mercator'
+            projection: 'mercator',
+            //disableZoom
+            scrollZoom: false,
+            //disableRotation
+            dragRotate: false,
+            //disablePitch
+            dragPan: false,
         });
+
 
         // Define your marker data
         const markerData = [
             {
                 align: "bottom-right",
-                name: `MIT, Cambridge, Massachusetts:
-                        <div>- J-PAL Global</div>
-                        <div>- MIT J-WAFS</div>
-                        <div>- MIT J-WEL</div>
-                        <div>- MIT Jameel Clinic</div>
-                        <div>- Jameel Observatory CREWSnet</div>
+                name: `<div class="city">MIT, Cambridge, Massachusetts:</div>
+                        <a href="" target="_blank">- J-PAL Global</a
+                         <a href="" target="_blank">- MIT J-WAFS</a>
+                         <a href="" target="_blank">- MIT J-WEL</a>
+                         <a href="" target="_blank">- MIT Jameel Clinic</a>
+                         <a href="" target="_blank">- Jameel Observatory CREWSnet</a>
 
             `, coordinates: [-71.09240951238363, 42.35896932867615]
             },
-            { align: "top-right", name: 'New York City, New York:<br>Jameel Arts & Health Lab', coordinates: [-74.00000563856793, 40.724678411585764] },
             {
-                align: "bottom-right", name: `London, United Kingdom:
-                <div>Jameel Institute</div>
-                <div> CLIMAVORE x Jameel at RCA</div>
+                align: "top-right",
+                name: `<div class="city">New York City, New York:</div>
+                    <a href="" target="_blank">- Jameel Arts & Health Lab</a>`,
+                coordinates: [-74.00000563856793, 40.724678411585764]
+            },
+            {
+                align: "bottom-right",
+                name: `<div class="city">London, United Kingdom:</div>
+                    <a href="" target="_blank">Jameel Institute</a>
+                    <a href="" target="_blank">CLIMAVORE x Jameel at RCA</a>
                 `, coordinates: [-0.06799825376552351, 51.50881496054432]
             },
-            { align: "top-left", name: 'Paris, France:<br> - J-PAL Europe', coordinates: [2.33887024861499, 48.871736664429854] },
             {
-                align: "top-right", name: `Cairo, Egypt:
-                    <div>- J-PAL MENA</div>
-                    <div>- Egypt Impact Lab</div>
-                    <div>- Jameel House</div>
+                align: "top-left",
+                name: `<div class="city">Paris, France:
+                    <a href="" target="_blank"> - J-PAL Europe</a>`,
+                coordinates: [2.33887024861499, 48.871736664429854]
+            },
+            {
+                align: "top-right", name: `<div class="city">Cairo, Egypt:</div>
+                     <a href="" target="_blank">- J-PAL MENA</a>
+                     <a href="" target="_blank">- Egypt Impact Lab</a>
+                     <a href="" target="_blank">- Jameel House</a>
                 `, coordinates: [31.251933921018196, 30.066274663503993]
             },
             {
-                align: "top-left", name: `Amman, Jordan:
-                    <div>- Jameel C40</div>
+                align: "top-left", name: `<div class="city">Amman, Jordan:</div>
+                     <a href="" target="_blank">- Jameel C40</a>
                 `, coordinates: [35.948483653410904, 31.87326059074893]
             },
             {
-                align: "top-right", name: `Nairobi, Kenya:
-                    <div>- Jameel Observatory for Food Security Early Action</div>
+                align: "top-right", name: `<div class="city">Nairobi, Kenya:</div>
+                     <a href="" target="_blank">- Jameel Observatory for Food Security Early Action</a>
                 `, coordinates: [36.858294042232124, -1.3429733852535548]
             },
             {
-                align: "top-left", name: `New Delhi, India:
-                    <div>J-PAL South Asia</div>
+                align: "top-left", name: `<div class="city">New Delhi, India:</div>
+                     <a href="" target="_blank">J-PAL South Asia</a>
                 `, coordinates: [77.19326317414409, 28.546483963642814]
             },
             {
-                align: "top-left", name: `Jakarta, Indonesia:
-                    <div>J-PAL Southeast Asia</div>
+                align: "top-left", name: `<div class="city">Jakarta, Indonesia:</div>
+                   <a href="" target="_blank">J-PAL Southeast Asia</a>
                 `, coordinates: [106.82780564173726, -6.154590023554769]
             },
 
         ];
+
+        map.on('load', function () {
+            map.addSource('route', {
+                'type': 'geojson',
+                'data': lines
+            });
+
+            map.addLayer({
+                'id': 'route',
+                'type': 'line',
+                'source': 'route',
+                'layout': {
+                    'line-join': 'round',
+                    'line-cap': 'round'
+                },
+                'paint': {
+                    'line-color': '#2b3fff',
+                    'line-width': 2
+                },
+
+            }, "country-boundaries copy");
+
+            // Add markers to the map
+            markerData.forEach((marker) => {
+                const el = createCustomMarker({ text: marker.name, align: marker.align });
+                new mapboxgl.Marker(el, {
+                    anchor: marker.align
+                })
+                    .setLngLat(marker.coordinates)
+                    .addTo(map);
+            });
+        });
 
         function createCustomMarker({ text, align }) {
             const markerEl = document.createElement('div');
@@ -205,16 +656,7 @@
             return markerEl;
         }
 
-        // Add markers to the map
-        markerData.forEach((marker) => {
 
-            const el = createCustomMarker({ text: marker.name, align: marker.align });
-            new mapboxgl.Marker(el, {
-                anchor: marker.align
-            })
-                .setLngLat(marker.coordinates)
-                .addTo(map);
-        });
 
 
     </script>
